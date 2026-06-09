@@ -80,7 +80,7 @@ El siguiente diagrama detalla el modelado de clases y las relaciones del sistema
 classDiagram
     %% Singleton DB
     class DatabaseConnection {
-        -static DatabaseConnection instance
+        -static instance DatabaseConnection
         -users Map
         -subscriptions Map
         +static getInstance() DatabaseConnection
@@ -91,23 +91,23 @@ classDiagram
     %% Repositories
     class IUserRepository {
         <<interface>>
-        +save(User)
-        +findById(string) User
+        +save(user) void
+        +findById(id) User
     }
     class UserRepository {
-        -DatabaseConnection db
-        +save(User)
-        +findById(string) User
+        -db DatabaseConnection
+        +save(user) void
+        +findById(id) User
     }
     class ISubscriptionRepository {
         <<interface>>
-        +save(Subscription)
-        +findByUserId(string) Subscription
+        +save(subscription) void
+        +findByUserId(userId) Subscription
     }
     class SubscriptionRepository {
-        -DatabaseConnection db
-        +save(Subscription)
-        +findByUserId(string) Subscription
+        -db DatabaseConnection
+        +save(subscription) void
+        +findByUserId(userId) Subscription
     }
     IUserRepository <|.. UserRepository
     ISubscriptionRepository <|.. SubscriptionRepository
@@ -116,11 +116,11 @@ classDiagram
 
     %% MVC Controllers
     class UserController {
-        -IUserRepository userRepo
+        -userRepo IUserRepository
         +registerUser(id, name, email, prefChannel) User
     }
     class SubscriptionController {
-        -ISubscriptionRepository subRepo
+        -subRepo ISubscriptionRepository
         +subscribeUser(userId, planType) Subscription
     }
     UserController --> IUserRepository
@@ -129,25 +129,25 @@ classDiagram
     %% Observer Pattern for Payments
     class IPaymentObserver {
         <<interface>>
-        +update(User, Subscription, number)
+        +update(user, subscription, amount) void
     }
     class PaymentService {
-        -List~IPaymentObserver~ observers
-        +attach(IPaymentObserver)
-        +detach(IPaymentObserver)
-        +processPayment(User, Subscription, number)
+        -observers IPaymentObserver[]
+        +attach(observer) void
+        +detach(observer) void
+        +processPayment(user, subscription, amount) void
     }
     class EmailNotificationObserver {
-        -NotificationFactory factory
-        +update(User, Subscription, number)
+        -factory NotificationFactory
+        +update(user, subscription, amount) void
     }
     class MetricsServiceObserver {
-        -number totalRevenue
-        +update(User, Subscription, number)
+        -totalRevenue number
+        +update(user, subscription, amount) void
     }
     class AccessControlObserver {
-        -ISubscriptionRepository subRepo
-        +update(User, Subscription, number)
+        -subRepo ISubscriptionRepository
+        +update(user, subscription, amount) void
     }
     IPaymentObserver <|.. EmailNotificationObserver
     IPaymentObserver <|.. MetricsServiceObserver
@@ -158,16 +158,16 @@ classDiagram
     %% Factory Method
     class INotification {
         <<interface>>
-        +send(string, string)
+        +send(recipient, message) void
     }
     class EmailNotification {
-        +send(string, string)
+        +send(recipient, message) void
     }
     class SMSNotification {
-        +send(string, string)
+        +send(recipient, message) void
     }
     class NotificationFactory {
-        +static createNotification(string) INotification
+        +static createNotification(type) INotification
     }
     INotification <|.. EmailNotification
     INotification <|.. SMSNotification
@@ -253,5 +253,3 @@ Para la gestión y planificación de este proyecto se aplicaron metodologías á
 | L - Liskov Substitution | Las clases concretas EmailNotification y SMSNotification implementan la interfaz común INotification. Pueden intercambiarse transparentemente en la Factory y el sistema seguirá funcionando idénticamente sin romper la consistencia. |
 | I - Interface Segregation | Se diseñaron interfaces pequeñas, limpias y altamente específicas (IUserRepository, ISubscriptionRepository, INotification, IPaymentObserver). Se evitó crear una interfaz monolítica "gigante", obligando a las clases a implementar solo los métodos que realmente necesitan. |
 | D - Dependency Inversion | Los controladores de alto nivel (UserController, SubscriptionController) no dependen de clases concretas ni de la base de datos directamente. En su lugar, dependen de abstracciones (interfaces), las cuales se inyectan a través de sus constructores (Inyección de Dependencias). |
-
-eof
