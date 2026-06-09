@@ -222,26 +222,7 @@ Aquí se muestra la salida real del sistema en consola, demostrando el registro 
 
 Para la gestión y planificación de este proyecto se aplicaron metodologías ágiles a través de un tablero Kanban en GitHub Projects. Se definieron historias de usuario y tareas técnicas para la implementación progresiva de los patrones de diseño y los principios SOLID, logrando un control total del ciclo de vida del desarrollo.
 
-```text
-+-----------------------------------+-----------------------------------+-----------------------------------+
-|            TO DO (0)              |          IN PROGRESS (0)          |             DONE (4)              |
-+-----------------------------------+-----------------------------------+-----------------------------------+
-|                                   |                                   | [X] Diseñar e implementar MVC     |
-|                                   |                                   |     Modelos, Vistas y Controller  |
-|                                   |                                   |                                   |
-|                                   |                                   | [X] Patrones de Creación:         |
-|                                   |                                   |     Singleton DB y Notification   |
-|                                   |                                   |     Factory Method.               |
-|                                   |                                   |                                   |
-|                                   |                                   | [X] Patrón de Comportamiento:     |
-|                                   |                                   |     Observer para eventos         |
-|                                   |                                   |     Post-Pago automáticos.        |
-|                                   |                                   |                                   |
-|                                   |                                   | [X] Infraestructura y Despliegue: |
-|                                   |                                   |     Contenerizar con Docker y     |
-|                                   |                                   |     crear Dockerfile.             |
-+-----------------------------------+-----------------------------------+-----------------------------------+
-```
+[👉 Ver Tablero Kanban Oficial en GitHub Projects](https://github.com/users/SolDF33/projects/4/views/1)
 ---
 
 ## 🎯 Justificación de Criterios Evaluados (Checklist SOLID)
